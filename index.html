@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fluxo de Caixa — 16 a 20/11/2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f3; color: #1a1a1a; padding: 24px 16px; max-width: 1000px; margin: 0 auto; }
+  h1 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .subtitle { font-size: 12px; color: #666; margin-bottom: 16px; }
+  .section-label { font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin: 20px 0 8px; }
+  .metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 4px; }
+  @media(min-width: 560px){ .metrics { grid-template-columns: repeat(4, 1fr); } }
+  .metric { background: #fff; border-radius: 10px; padding: 12px 14px; border: 1px solid #e8e8e6; }
+  .metric .lbl { font-size: 11px; color: #888; margin-bottom: 5px; }
+  .metric .val { font-size: 20px; font-weight: 600; }
+  .blue .val { color: #1a6fcf; }
+  .green .val { color: #1a8a4a; }
+  .red .val { color: #c0392b; }
+  .orange .val { color: #b75e00; }
+  .metric .sub { font-size: 11px; color: #aaa; margin-top: 2px; }
+  .alert-box { background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+  .alert-box .titulo { font-size: 13px; font-weight: 700; color: #92400e; margin-bottom: 4px; }
+  .alert-box .desc { font-size: 12px; color: #92400e; line-height: 1.6; }
+  .saldo-box { border-radius: 10px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
+  .saldo-pos { background: #eaf7ee; border: 1px solid #a8ddb8; }
+  .saldo-neg { background: #fdecea; border: 1px solid #f5b4ae; }
+  .saldo-box .slbl { font-size: 13px; font-weight: 500; }
+  .saldo-box .ssub { font-size: 11px; color: #888; margin-top: 2px; }
+  .saldo-box .sval { font-size: 24px; font-weight: 700; }
+  .saldo-pos .slbl, .saldo-pos .sval { color: #1a7a3a; }
+  .saldo-neg .slbl, .saldo-neg .sval { color: #b52b1e; }
+  .card { background: #fff; border-radius: 10px; border: 1px solid #e8e8e6; overflow: hidden; margin-bottom: 4px; }
+  .card-warn { border-color: #f0c060; }
+  .card-green { border-color: #7ecb9a; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  th { text-align: left; font-weight: 600; color: #888; font-size: 11px; padding: 8px 10px; border-bottom: 1px solid #e8e8e6; background: #fafaf8; }
+  th.r { text-align: right; }
+  td { padding: 7px 10px; border-bottom: 1px solid #f0f0ee; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  .r { text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; }
+  .amt-red { color: #c0392b; }
+  .amt-green { color: #1a8a4a; }
+  .amt-orange { color: #b75e00; }
+  .amt-blue { color: #1a6fcf; }
+  .row-hoje { background: #fffbf0; }
+  .row-atr { background: #fff5f5; }
+  .total-row td { font-weight: 700; background: #f5f5f3; font-size: 12.5px; }
+  .note { font-size: 11px; color: #999; padding: 6px 10px; background: #fafaf8; border-top: 1px solid #f0f0ee; }
+  .tag { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 99px; background: #f0f0ee; color: #666; white-space: nowrap; }
+  .tag-red { background: #fdecea; color: #b52b1e; }
+  .tag-orange { background: #fff0d6; color: #92400e; }
+  .tag-green { background: #dcfce7; color: #166534; }
+  .tabs { display: flex; gap: 6px; margin-bottom: 0; flex-wrap: wrap; }
+  .tab-btn { padding: 8px 16px; border-radius: 8px 8px 0 0; border: 1px solid #e8e8e6; border-bottom: none; background: #ececea; color: #888; font-size: 13px; font-weight: 500; cursor: pointer; }
+  .tab-btn.active { background: #fff; color: #1a1a1a; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .tab-wrap { background: #fff; border: 1px solid #e8e8e6; border-radius: 0 10px 10px 10px; overflow: hidden; }
+  .tab-inner { padding: 16px; }
+</style>
+</head>
+<body>
+
+<h1>Fluxo de Caixa Semanal</h1>
+<p class="subtitle">Semana de 16 a 20/11/2026 &nbsp;·&nbsp; Gerado em 16/11/2026</p>
+
+<div class="alert-box">
+  <div class="titulo">Saldo BTG cobre o vence hoje por pouco</div>
+  <div class="desc">
+    BTG de R$ 16.279,72 contra R$ 15.614,00 que vencem hoje: sobra de R$ 665,72.<br>
+    Amanhã (17/11) vencem R$ 22.678,69 e dia 20/11 vencem R$ 23.442,08. O pagamento depende das entradas previstas.
+  </div>
+</div>
+
+<p class="section-label">Resumo geral</p>
+<div class="metrics">
+  <div class="metric blue">
+    <div class="lbl">Saldo atual (BTG)</div>
+    <div class="val">R$ 16.279</div>
+    <div class="sub">Disponível agora</div>
+  </div>
+  <div class="metric green">
+    <div class="lbl">A receber até 20/11</div>
+    <div class="val">R$ 18.500</div>
+    <div class="sub">Hoje + a vencer (em dia)</div>
+  </div>
+  <div class="metric orange">
+    <div class="lbl">Recebimentos em atraso</div>
+    <div class="val">R$ 38.667</div>
+    <div class="sub">11 lançamentos de clientes</div>
+  </div>
+  <div class="metric red">
+    <div class="lbl">A pagar até 20/11</div>
+    <div class="val">R$ 73.657</div>
+    <div class="sub">Hoje + próximos dias</div>
+  </div>
+</div>
+
+<p class="section-label" style="margin-top:16px;">Saldo estimado em 20/11</p>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('semana', event)">Só a semana</button>
+  <button class="tab-btn" onclick="switchTab('receber', event)">Se receber os atrasados</button>
+</div>
+<div class="tab-wrap">
+  <div class="tab-panel active" id="tab-semana">
+    <div class="tab-inner">
+      <div class="saldo-box saldo-neg" style="margin-bottom:0;">
+        <div>
+          <div class="slbl">Resultado projetado — recebimentos em dia</div>
+          <div class="ssub">BTG (16.279,72) + recebimentos em dia (18.500,00) − pagamentos da semana (73.656,93)</div>
+        </div>
+        <div class="sval">− R$ 38.877,21</div>
+      </div>
+    </div>
+    <div class="note">Recebimentos em atraso de clientes (R$ 38.666,66) não estão incluídos acima. Veja a aba ao lado.</div>
+  </div>
+  <div class="tab-panel" id="tab-receber">
+    <div class="tab-inner">
+      <div class="saldo-box saldo-neg" style="margin-bottom:0;">
+        <div>
+          <div class="slbl">Se todos os atrasados de clientes forem recebidos</div>
+          <div class="ssub">Cenário otimista: inclui clientes com cobrança enviada e cliente cancelado</div>
+        </div>
+        <div class="sval">− R$ 210,55</div>
+      </div>
+    </div>
+    <table>
+      <tbody>
+        <tr><td style="padding:8px 10px;">Saldo estimado da semana (só em dia)</td><td class="r amt-red" style="padding:8px 10px;">− R$ 38.877,21</td></tr>
+        <tr><td style="padding:8px 10px;">+ Atrasados com promessa de pagamento <span class="tag tag-green">5 clientes</span><br><span style="font-size:11px;color:#888;">Goodbe, DAS Comércio, Chiquinho Sorvetes, Moritz (hoje) e Pontual Cargas (17/11)</span></td><td class="r amt-green" style="padding:8px 10px;">+ R$ 16.416,66</td></tr>
+        <tr class="total-row"><td style="padding:8px 10px;">Saldo se receber só quem prometeu</td><td class="r amt-red" style="padding:8px 10px;">− R$ 22.460,55</td></tr>
+        <tr><td style="padding:8px 10px;">+ Demais atrasados <span class="tag tag-orange">6 clientes</span><br><span style="font-size:11px;color:#888;">Cobrança enviada, cliente cancelado ou em verificação</span></td><td class="r amt-orange" style="padding:8px 10px;">+ R$ 22.250,00</td></tr>
+        <tr class="total-row"><td style="padding:8px 10px;">Saldo se receber todos os atrasados</td><td class="r amt-red" style="padding:8px 10px;">− R$ 210,55</td></tr>
+      </tbody>
+    </table>
+    <div class="note">Mesmo recebendo tudo o que está em aberto, a semana fecha no limite. Pagamentos atrasados de fornecedores não estão considerados.</div>
+  </div>
+</div>
+
+<!-- VENCE HOJE -->
+<p class="section-label" style="margin-top:20px;">Vence hoje — 16/11/2026</p>
+<div class="card card-warn">
+  <table>
+    <thead><tr><th>Fornecedor</th><th>Categoria</th><th class="r">Valor</th></tr></thead>
+    <tbody>
+      <tr class="row-hoje"><td>5G Company</td><td>Eventos</td><td class="r amt-orange">R$ 5.000,00</td></tr>
+      <tr class="row-hoje"><td>Sávio Coelho Magalhães Filho</td><td>Bonificações</td><td class="r amt-orange">R$ 800,00</td></tr>
+      <tr class="row-hoje"><td>Thiago Rodrigues de Castro</td><td>Bonificações</td><td class="r amt-orange">R$ 200,00</td></tr>
+      <tr class="row-hoje"><td>Leila Gabriele de Sousa Paulino</td><td>Comissões</td><td class="r amt-orange">R$ 4.400,00</td></tr>
+      <tr class="row-hoje"><td>Thiago Rodrigues de Castro</td><td>Comissões</td><td class="r amt-orange">R$ 5.214,00</td></tr>
+      <tr class="total-row"><td colspan="2">Total vence hoje</td><td class="r amt-orange">R$ 15.614,00</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- A VENCER -->
+<p class="section-label" style="margin-top:20px;">A vencer — 17 a 20/11/2026</p>
+<div class="card">
+  <table>
+    <thead><tr><th>Fornecedor</th><th>Vence em</th><th>Categoria</th><th class="r">Valor</th></tr></thead>
+    <tbody>
+      <tr><td>Kelly Cristina de Almeida</td><td>17/11</td><td>Eventos</td><td class="r">R$ 9.000,00</td></tr>
+      <tr><td>Skeeps</td><td>17/11</td><td>Aluguel</td><td class="r">R$ 10.849,49</td></tr>
+      <tr><td>Studio MC</td><td>17/11</td><td>Brindes</td><td class="r">R$ 2.829,20</td></tr>
+      <tr><td>Zapsign</td><td>18/11</td><td>Softwares</td><td class="r">R$ 69,90</td></tr>
+      <tr><td>Receita Federal</td><td>19/11</td><td>INSS</td><td class="r">R$ 660,00</td></tr>
+      <tr><td>Saleshunter Soluções em Vendas</td><td>19/11</td><td>Treinamento/Capacitação</td><td class="r">R$ 2.587,50</td></tr>
+      <tr><td>Guilherme Silva dos Anjos</td><td>19/11</td><td>Empréstimos</td><td class="r">R$ 2.800,00</td></tr>
+      <tr><td>Unicus Travel</td><td>19/11</td><td>Despesas com viagens</td><td class="r">R$ 5.804,76</td></tr>
+      <tr><td>Cesar Vasconcelos Canal</td><td>20/11</td><td>Devolução para clientes</td><td class="r">R$ 10.900,00</td></tr>
+      <tr><td>M Contábil</td><td>20/11</td><td>Contabilidade</td><td class="r">R$ 1.621,00</td></tr>
+      <tr><td>Receita Federal</td><td>20/11</td><td>Simples Nacional (DAS)</td><td class="r">R$ 10.921,08</td></tr>
+      <tr class="total-row"><td colspan="3">Total a vencer (17–20/11)</td><td class="r">R$ 58.042,93</td></tr>
+    </tbody>
+  </table>
+  <div class="note">Por dia: 17/11 R$ 22.678,69 · 18/11 R$ 69,90 · 19/11 R$ 11.852,26 · 20/11 R$ 23.442,08</div>
+</div>
+
+<!-- RECEBIMENTOS -->
+<p class="section-label" style="margin-top:20px;">Recebimentos em aberto — atrasados e a vencer até 20/11</p>
+<div class="card card-green">
+  <table>
+    <thead><tr><th>Cliente</th><th>Categoria · Data</th><th>Status</th><th class="r">Valor</th></tr></thead>
+    <tbody>
+      <tr class="row-atr"><td>Eletromóveis Barrinha</td><td>PAF · <span class="tag">atr. 13/10</span></td><td><span class="tag tag-red">Cobrança enviada · cliente cancelou</span></td><td class="r amt-red">R$ 2.500,00</td></tr>
+      <tr class="row-atr"><td>Auto Posto Palermo</td><td>Consultoria Start · <span class="tag">atr. 20/10</span></td><td><span class="tag tag-orange">Cobrança enviada</span></td><td class="r amt-red">R$ 3.500,00</td></tr>
+      <tr class="row-atr"><td>Goodbe Centro Bem Estar</td><td>Brave Board · <span class="tag">atr. 30/10</span></td><td><span class="tag tag-green">Disse que efetua hoje</span></td><td class="r amt-red">R$ 2.083,33</td></tr>
+      <tr class="row-atr"><td>DAS Comércio e Representações</td><td>Consultoria Start · <span class="tag">atr. 06/11</span></td><td><span class="tag tag-green">Recebido parcial · falta 1k, pagamento hoje</span></td><td class="r amt-red">R$ 1.000,00</td></tr>
+      <tr class="row-atr"><td>Pontual Cargas</td><td>Consultoria Start · <span class="tag">atr. 06/11</span></td><td><span class="tag tag-green">Pagamento dia 17/11</span></td><td class="r amt-red">R$ 3.000,00</td></tr>
+      <tr class="row-atr"><td>Chiquinho Sorvetes</td><td>PAF Essencial · <span class="tag">atr. 10/11</span></td><td><span class="tag tag-green">Pagamento hoje</span></td><td class="r amt-red">R$ 3.333,33</td></tr>
+      <tr class="row-atr"><td>Skyfit Recife</td><td>BPO Financeiro · <span class="tag">atr. 12/11</span></td><td><span class="tag tag-orange">Verificando com Kleyton</span></td><td class="r amt-red">R$ 1.250,00</td></tr>
+      <tr class="row-atr"><td>Moritz Pneus e Serviços</td><td>Consultoria Scale · <span class="tag">atr. 13/11</span></td><td><span class="tag tag-green">Pagamento hoje</span></td><td class="r amt-red">R$ 7.000,00</td></tr>
+      <tr class="row-atr"><td>Hiper Opa</td><td>Consultoria Fin. · <span class="tag">atr. 13/11</span></td><td><span class="tag tag-orange">Cobrança enviada</span></td><td class="r amt-red">R$ 5.000,00</td></tr>
+      <tr class="row-atr"><td>Cevaroli Supermercados</td><td>Consultoria Fin. · <span class="tag">atr. 13/11</span></td><td><span class="tag tag-orange">Cobrança enviada</span></td><td class="r amt-red">R$ 5.000,00</td></tr>
+      <tr class="row-atr"><td>Avenida Supermercado</td><td>Consultoria Fin. · <span class="tag">atr. 13/11</span></td><td><span class="tag tag-orange">Cobrança enviada</span></td><td class="r amt-red">R$ 5.000,00</td></tr>
+      <tr class="row-hoje"><td>Club Mais Restaurante</td><td>BPO Financeiro · hoje</td><td>—</td><td class="r amt-green">R$ 2.000,00</td></tr>
+      <tr class="row-hoje"><td>FalconTruck</td><td>Board + Consultoria Fin. (50/50) · hoje</td><td>—</td><td class="r amt-green">R$ 4.000,00</td></tr>
+      <tr><td>Transrossi</td><td>Consultoria Start · 19/11</td><td>—</td><td class="r amt-green">R$ 3.500,00</td></tr>
+      <tr><td>Auto Posto Palermo</td><td>Consultoria Start · 20/11</td><td>—</td><td class="r amt-green">R$ 3.500,00</td></tr>
+      <tr><td>Skyfit Barro</td><td>Consultoria Fin. · 20/11</td><td>—</td><td class="r amt-green">R$ 625,00</td></tr>
+      <tr><td>Skyfit Campina Grande</td><td>Consultoria Fin. · 20/11</td><td>—</td><td class="r amt-green">R$ 625,00</td></tr>
+      <tr><td>Skyfit Caruaru</td><td>Consultoria Fin. · 20/11</td><td>—</td><td class="r amt-green">R$ 625,00</td></tr>
+      <tr><td>Skyfit Recife</td><td>Consultoria Fin. · 20/11</td><td>—</td><td class="r amt-green">R$ 625,00</td></tr>
+      <tr><td>Triunfo Suprimentos</td><td>Brave Board · 20/11</td><td>—</td><td class="r amt-green">R$ 3.000,00</td></tr>
+      <tr class="total-row"><td colspan="3">Total em aberto (atrasados + hoje + a vencer)</td><td class="r amt-green">R$ 57.166,66</td></tr>
+    </tbody>
+  </table>
+  <div class="note">Linhas em rosa = em atraso (R$ 38.666,66). Em dia: R$ 6.000,00 hoje + R$ 12.500,00 a vencer = R$ 18.500,00. Prometidos para hoje ou 17/11: R$ 16.416,66.</div>
+</div>
+
+<!-- RESUMO FINAL -->
+<p class="section-label" style="margin-top:20px;">Resumo consolidado da semana</p>
+<div class="card">
+  <table>
+    <tbody>
+      <tr><td>Saldo atual (BTG)</td><td class="r amt-blue">+ R$ 16.279,72</td></tr>
+      <tr><td>Recebimentos em dia (hoje + a vencer)</td><td class="r amt-green">+ R$ 18.500,00</td></tr>
+      <tr><td>Total a pagar até 20/11 (hoje R$ 15.614,00 + a vencer R$ 58.042,93)</td><td class="r amt-red">− R$ 73.656,93</td></tr>
+      <tr class="total-row"><td>Saldo estimado em 20/11</td><td class="r amt-red">− R$ 38.877,21</td></tr>
+      <tr><td>+ Recebimentos em atraso de clientes (se entrarem)</td><td class="r amt-orange">+ R$ 38.666,66</td></tr>
+      <tr class="total-row"><td>Saldo estimado se todos os atrasados entrarem</td><td class="r amt-red">− R$ 210,55</td></tr>
+    </tbody>
+  </table>
+  <div class="note">Pagamentos atrasados de fornecedores e cartões em atraso ainda não foram enviados e não estão incluídos.</div>
+</div>
+
+<script>
+function switchTab(id, e) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  e.target.classList.add('active');
+}
+</script>
+</body>
+</html>
